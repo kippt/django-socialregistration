@@ -19,10 +19,12 @@ class Facebook(OAuth2):
     
     
     def get_callback_url(self):
+        host = getattr(settings, 'FACEBOOK_CALLBACK_HOST',
+                       Site.objects.get_current().domain)
         if self.is_https():
-            return 'https://%s%s' % (Site.objects.get_current().domain,
+            return 'https://%s%s' % (host,
                 reverse('socialregistration:facebook:callback'))
-        return 'http://%s%s' % (Site.objects.get_current().domain,
+        return 'http://%s%s' % (host,
             reverse('socialregistration:facebook:callback'))
         
     def get_user_info(self):
