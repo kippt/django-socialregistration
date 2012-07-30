@@ -151,6 +151,19 @@ class ProfileMixin(object):
             profile = self.get_model().objects.get(user=user, **kwargs)
             return profile, False
         except self.get_model().DoesNotExist:
+            # Make sure this 3rd party identify has not already been
+            # associated with another Kippt user account
+            for s in ['uid', 'twitter_id', 'tumblr']:
+                if s in kwargs.keys():
+                    # Throws an exception if more than one found
+                    try:
+                        p = self.get_model().objects.get(**kwargs)
+                        if p:
+                            raise Exception('Duplicate identity')
+                    except self.get_model().DoesNotExist:
+                        pass
+                    break
+
             profile = self.create_profile(user, save=save, **kwargs)
             return profile, True
 

@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.contrib.auth import logout
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.views.generic.base import View
 from django.utils.translation import ugettext_lazy as _
 from socialregistration.clients.oauth import OAuthError
@@ -246,8 +246,14 @@ class SetupCallback(SocialRegistration, View):
 
         # Logged in user connecting an account
         if request.user.is_authenticated():
-            profile, created = self.get_or_create_profile(request.user,
-                save=True, **lookup_kwargs)
+            try:
+                profile, created = self.get_or_create_profile(request.user,
+                    save=True, **lookup_kwargs)
+            except Exception as e:
+                if 'Duplicate identity' in str(e):
+                    return HttpResponse('It looks like you already used that ' \
+                                        'provider with another Kippt account. '\
+                                        '<a href="/">Back to Kippt</a>')
 
             # Profile existed - but got reconnected. Send the signal and 
             # send the 'em where they were about to go in the first place.
