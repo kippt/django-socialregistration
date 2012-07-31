@@ -29,6 +29,11 @@ if 'socialregistration.contrib.github' in settings.INSTALLED_APPS:
         url(r'^github/', include('socialregistration.contrib.github.urls',
             namespace='github')))
 
+if 'socialregistration.contrib.buffer' in settings.INSTALLED_APPS:
+    urlpatterns = urlpatterns + patterns('',
+        url(r'^buffer/', include('socialregistration.contrib.buffer.urls',
+            namespace='buffer')))
+
 if 'socialregistration.contrib.foursquare' in settings.INSTALLED_APPS:
     urlpatterns = urlpatterns + patterns('',
         url(r'^foursquare/', include('socialregistration.contrib.foursquare.urls',
