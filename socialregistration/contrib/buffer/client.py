@@ -28,7 +28,7 @@ class Buffer(OAuth2):
         """ 
         Buffer requires correct content-type for POST requests
         """
-        return self.client().request(self.access_token_url, method="POST", body=urllib.urlencode(params), headers={'Content-Type':'application/x-www-form-urlencoded'})
+        return self.client().Http(disable_ssl_certificate_validation=True).request(self.access_token_url, method="POST", body=urllib.urlencode(params), headers={'Content-Type':'application/x-www-form-urlencoded'})
     
     def parse_access_token(self, content):
         """
@@ -44,7 +44,7 @@ class Buffer(OAuth2):
 
     def get_user_info(self):
         if self._user_info is None:
-            resp, content = self.client().request('https://api.bufferapp.com/1/user.json?%s' % urllib.urlencode({'access_token':self._access_token}), method="GET")
+            resp, content = self.client().Http(disable_ssl_certificate_validation=True).request('https://api.bufferapp.com/1/user.json?%s' % urllib.urlencode({'access_token':self._access_token}), method="GET")
             self._user_info = json.loads(content)
         return self._user_info
     
