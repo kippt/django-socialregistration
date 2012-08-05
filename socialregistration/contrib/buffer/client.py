@@ -5,7 +5,7 @@ from socialregistration.clients.oauth import OAuth2
 from socialregistration.settings import SESSION_KEY
 import json
 import urllib
-
+import httplib2
 
 class Buffer(OAuth2):
     client_id = getattr(settings, 'BUFFER_CLIENT_ID', '')
@@ -16,6 +16,9 @@ class Buffer(OAuth2):
     access_token_url = 'https://api.bufferapp.com/1/oauth2/token.json'
     
     _user_info = None
+    
+    def client(self):
+        return httplib2.Http(disable_ssl_certificate_validation=True)
     
     def get_callback_url(self):
         if self.is_https():
@@ -28,7 +31,7 @@ class Buffer(OAuth2):
         """ 
         Buffer requires correct content-type for POST requests
         """
-        return self.client().Http(disable_ssl_certificate_validation=True).request(self.access_token_url, method="POST", body=urllib.urlencode(params), headers={'Content-Type':'application/x-www-form-urlencoded'})
+        return self.client().request(self.access_token_url, method="POST", body=urllib.urlencode(params), headers={'Content-Type':'application/x-www-form-urlencoded'})
     
     def parse_access_token(self, content):
         """
@@ -44,7 +47,7 @@ class Buffer(OAuth2):
 
     def get_user_info(self):
         if self._user_info is None:
-            resp, content = self.client().Http(disable_ssl_certificate_validation=True).request('https://api.bufferapp.com/1/user.json?%s' % urllib.urlencode({'access_token':self._access_token}), method="GET")
+            resp, content = self.client().request('https://api.bufferapp.com/1/user.json?%s' % urllib.urlencode({'access_token':self._access_token}), method="GET")
             self._user_info = json.loads(content)
         return self._user_info
     
