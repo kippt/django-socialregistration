@@ -84,7 +84,7 @@ class Setup(SocialRegistration, View):
         
         self.delete_session_data(request)
         
-        return HttpResponseRedirect('/welcome/')
+        return HttpResponseRedirect(self.get_next(request))
         
     def get(self, request):
         """
@@ -132,7 +132,7 @@ class Setup(SocialRegistration, View):
         
         self.delete_session_data(request)
         
-        return HttpResponseRedirect(self.get_next(request))
+        return HttpResponseRedirect('/welcome/')
 
 
 class Logout(View):
