@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from socialregistration.clients.oauth import OAuth2
 from socialregistration.settings import SESSION_KEY
 import json
-
+import httplib2
 
 class Github(OAuth2):
     client_id = getattr(settings, 'GITHUB_CLIENT_ID', '')
