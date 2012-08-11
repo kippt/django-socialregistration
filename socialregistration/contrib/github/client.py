@@ -16,6 +16,9 @@ class Github(OAuth2):
     
     _user_info = None
     
+    def client(self):
+        return httplib2.Http(disable_ssl_certificate_validation=True)
+    
     def get_callback_url(self):
         if self.is_https():
             return 'https://%s%s' % (Site.objects.get_current().domain,
