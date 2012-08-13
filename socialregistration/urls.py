@@ -34,6 +34,11 @@ if 'socialregistration.contrib.buffer' in settings.INSTALLED_APPS:
         url(r'^buffer/', include('socialregistration.contrib.buffer.urls',
             namespace='buffer')))
 
+if 'socialregistration.contrib.appdotnet' in settings.INSTALLED_APPS:
+    urlpatterns = urlpatterns + patterns('',
+        url(r'^appdotnet/', include('socialregistration.contrib.appdotnet.urls',
+            namespace='appdotnet')))
+
 if 'socialregistration.contrib.foursquare' in settings.INSTALLED_APPS:
     urlpatterns = urlpatterns + patterns('',
         url(r'^foursquare/', include('socialregistration.contrib.foursquare.urls',
