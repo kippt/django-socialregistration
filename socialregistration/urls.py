@@ -39,6 +39,11 @@ if 'socialregistration.contrib.appdotnet' in settings.INSTALLED_APPS:
         url(r'^appdotnet/', include('socialregistration.contrib.appdotnet.urls',
             namespace='appdotnet')))
 
+if 'socialregistration.contrib.google' in settings.INSTALLED_APPS:
+    urlpatterns = urlpatterns + patterns('',
+        url(r'^google/', include('socialregistration.contrib.google.urls',
+            namespace='google')))
+
 if 'socialregistration.contrib.foursquare' in settings.INSTALLED_APPS:
     urlpatterns = urlpatterns + patterns('',
         url(r'^foursquare/', include('socialregistration.contrib.foursquare.urls',
