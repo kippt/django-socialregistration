@@ -48,7 +48,7 @@ class Appdotnet(OAuth2):
     def get_user_info(self):
         if self._user_info is None:
             resp, content = self.client().request('https://alpha-api.app.net/stream/0/users/me?%s' % urllib.urlencode({'access_token':self._access_token}), method="GET")
-            self._user_info = json.loads(content)
+            self._user_info = json.loads(content)['data']
         return self._user_info
     
     @staticmethod
